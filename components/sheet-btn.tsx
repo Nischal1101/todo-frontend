@@ -11,7 +11,7 @@ const SheetBtn = () => {
     <>
       <Button onClick={onOpen}>
         <Plus />
-        New Task
+        New Todo
       </Button>
       <TodoSheet />
     </>
