@@ -76,7 +76,8 @@ const CreateTodoForm = () => {
                 <FormLabel>Priority</FormLabel>
                 <FormControl>
                   <RadioGroup
-                    defaultValue={field.value}
+                    defaultValue={"medium"}
+                    value={field.value}
                     className="flex gap-2 mt-5 "
                     onValueChange={field.onChange}
                   >
