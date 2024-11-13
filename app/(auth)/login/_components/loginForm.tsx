@@ -8,22 +8,21 @@ import {
   Form,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Mail, LockKeyhole, User } from "lucide-react";
+import { Mail, LockKeyhole } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { registrationSchema } from "@/lib/validators/registrationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { loginSchema } from "@/lib/validators/loginSchema";
 
-export type FormValues = z.infer<typeof registrationSchema>;
-const UserRegistrationForm = () => {
+export type FormValues = z.infer<typeof loginSchema>;
+const LoginForm = () => {
   const onSubmit = (values: FormValues) => {
     console.log(values);
   };
 
-  const form = useForm<z.infer<typeof registrationSchema>>({
-    resolver: zodResolver(registrationSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
@@ -42,25 +41,6 @@ const UserRegistrationForm = () => {
                   <Input
                     type="email"
                     placeholder=" Your Email"
-                    {...field}
-                    className={`input input-bordered w-full max-w-xs px-8 transition delay-150 ease-in-out hover:border-gray-500 `}
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className="mt-3 relative flex flex-col items-center justify-center">
-                  <User className="absolute left-2 top-[0.65rem] " size={15} />
-                  <Input
-                    placeholder=" Your name"
                     {...field}
                     className={`input input-bordered w-full max-w-xs px-8 transition delay-150 ease-in-out hover:border-gray-500 `}
                   />
@@ -94,11 +74,11 @@ const UserRegistrationForm = () => {
           )}
         />
         <Button type="submit" className="btn btn-primary mt-4 w-full max-w-xs ">
-          Sign Up
+          Sign In
         </Button>
       </form>
     </Form>
   );
 };
 
-export default UserRegistrationForm;
+export default LoginForm;
