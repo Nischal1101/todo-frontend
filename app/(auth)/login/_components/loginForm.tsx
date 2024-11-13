@@ -1,23 +1,40 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import AuthBtn from "@/components/auth-btn";
 import {
+  Form,
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormMessage,
-  Form,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Mail, LockKeyhole } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { loginSchema } from "@/lib/validators/loginSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LockKeyhole, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 export type FormValues = z.infer<typeof loginSchema>;
 const LoginForm = () => {
-  const onSubmit = (values: FormValues) => {
-    console.log(values);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const onSubmit = async (values: FormValues) => {
+    setLoading(true);
+    const response = await fetch("http://localhost:8000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const res = await response.json();
+    setLoading(false);
+    if (res.status === "success") {
+      document.cookie = `auth_token=${res.token.accessToken}; path=/;`;
+      router.push("/");
+    }
   };
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -73,9 +90,7 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="btn btn-primary mt-4 w-full max-w-xs ">
-          Sign In
-        </Button>
+        <AuthBtn title="Sign In" loading={loading} />
       </form>
     </Form>
   );
