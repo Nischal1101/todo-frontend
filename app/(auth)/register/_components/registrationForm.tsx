@@ -1,23 +1,39 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import AuthBtn from "@/components/auth-btn";
 import {
+  Form,
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormMessage,
-  Form,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Mail, LockKeyhole, User } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { registrationSchema } from "@/lib/validators/registrationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LockKeyhole, Mail, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export type FormValues = z.infer<typeof registrationSchema>;
 const UserRegistrationForm = () => {
-  const onSubmit = (values: FormValues) => {
-    console.log(values);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const onSubmit = async (values: FormValues) => {
+    setLoading(true);
+    const response = await fetch("http://localhost:8000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const res = await response.json();
+    if (res.status === "success") {
+      setLoading(false);
+      router.push("/login");
+    }
   };
 
   const form = useForm<z.infer<typeof registrationSchema>>({
@@ -93,9 +109,7 @@ const UserRegistrationForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="btn btn-primary mt-4 w-full max-w-xs ">
-          Sign Up
-        </Button>
+        <AuthBtn title="Sign Up" loading={loading} />
       </form>
     </Form>
   );
