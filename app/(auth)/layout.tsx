@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Josefin_Sans as JosefinSans } from "next/font/google";
 import "../globals.css";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 
 const josefinSans = JosefinSans({
   subsets: ["latin"],
@@ -23,11 +24,12 @@ export default function AuthLayout({
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
         className={cn(
-          "relative h-full font-josefin_sans antialiased",
+          "relative h-full font-josefin_sans antialiased bg-gray-50",
           josefinSans.variable
         )}
       >
         <main className="relative flex min-h-screen flex-col">{children}</main>
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );

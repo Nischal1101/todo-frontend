@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Josefin_Sans as JosefinSans } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 import "../globals.css";
 import React from "react";
@@ -36,6 +37,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </main>
+      <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
