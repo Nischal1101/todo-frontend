@@ -8,6 +8,8 @@ interface User {
 }
 
 interface AuthStore {
+  refetch: boolean;
+  setRefetch: (refetch: boolean) => void;
   token: string | null;
   user: User | null;
   setToken: (token: string | null) => void;
@@ -18,6 +20,8 @@ interface AuthStore {
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
+      refetch: false,
+      setRefetch: (refetch) => set({ refetch }),
       token: null,
       user: null,
       setToken: (token) => set({ token }),
@@ -25,7 +29,7 @@ export const useAuthStore = create<AuthStore>()(
       logout: () => set({ token: null, user: null }),
     }),
     {
-      name: "auth-storage",
+      name: "auth-store",
     }
   )
 );
