@@ -1,13 +1,13 @@
 import z from "zod";
 
 export const registrationSchema = z.object({
-  name: z
-    .string({ message: "username should be a string" })
-    .min(4, { message: "name should contain at least 4 characters" }),
-  password: z
-    .string({ message: "password should be string" })
-    .min(5, { message: "password should contain at least 4 characters" }),
   email: z
     .string({ required_error: "email is a required field" })
-    .email({ message: " email should be in a correct format" }),
+    .email({ message: "email should be in correct format" }),
+  password: z
+    .string({ required_error: "password is a required field" })
+    .min(5, { message: "Password should be at least 5 chars long" }),
+  name: z
+    .string({ required_error: "name is a required field" })
+    .min(4, { message: "name should be at least 4 chars long" }),
 });

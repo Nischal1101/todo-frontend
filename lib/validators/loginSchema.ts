@@ -2,7 +2,7 @@ import z from "zod";
 
 export const loginSchema = z.object({
   password: z
-    .string({ message: "password should be string" })
+    .string({ required_error: "password is a required field" })
     .min(5, { message: "password should contain at least 4 characters" }),
   email: z
     .string({ required_error: "email is a required field" })
