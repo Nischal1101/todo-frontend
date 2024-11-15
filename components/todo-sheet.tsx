@@ -16,8 +16,8 @@ const TodoSheet = () => {
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="min-w-[28rem] space-y-4">
         <SheetHeader>
-          <SheetTitle>Create Todo</SheetTitle>
-          <SheetDescription>Add a new Todo</SheetDescription>
+          <SheetTitle>Create a new Todo</SheetTitle>
+          <SheetDescription>Add Todo</SheetDescription>
         </SheetHeader>
         <CreateTodoForm />
       </SheetContent>
