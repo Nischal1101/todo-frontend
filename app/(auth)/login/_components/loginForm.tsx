@@ -19,9 +19,12 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 
 export type FormValues = z.infer<typeof loginSchema>;
+
 const LoginForm = () => {
+  // Get the setToken method from the auth store
   const { setToken } = useAuthStore();
-  const router = useRouter();
+  const router = useRouter(); // State to manage the loading state of the form submission
+
   const [loading, setLoading] = useState(false);
   const onSubmit = async (values: FormValues) => {
     setLoading(true);
