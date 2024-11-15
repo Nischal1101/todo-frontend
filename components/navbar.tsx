@@ -1,5 +1,6 @@
 import MaxWidthWrapper from "@/components/maxWidthWrapper";
-import { Bell, CheckCircle, User } from "lucide-react";
+import { Bell, CheckCircle } from "lucide-react";
+import LogoutAvatar from "./logoutAvatar";
 
 const Navbar = () => {
   return (
@@ -14,7 +15,7 @@ const Navbar = () => {
               </div>
               <div className="  items-center gap-8 flex ">
                 <Bell />
-                <User />
+                <LogoutAvatar />
               </div>
             </div>
           </div>

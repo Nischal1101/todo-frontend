@@ -1,8 +1,16 @@
+"use client";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import LoginForm from "./_components/loginForm";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 const LoginPage = () => {
+  const { token } = useAuthStore();
+  const router = useRouter();
+  if (token) {
+    router.push("/");
+  }
   return (
     <div className="flex h-screen items-center justify-center  px-4 sm:px-6 lg:px-8">
       <div className="w-96 p-8 shadow-2xl ">

@@ -9,15 +9,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/lib/validators/loginSchema";
+import { useAuthStore } from "@/store/authStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LockKeyhole, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
 export type FormValues = z.infer<typeof loginSchema>;
 const LoginForm = () => {
+  const { setToken } = useAuthStore();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const onSubmit = async (values: FormValues) => {
@@ -32,8 +35,16 @@ const LoginForm = () => {
     const res = await response.json();
     setLoading(false);
     if (res.status === "success") {
-      document.cookie = `auth_token=${res.token.accessToken}; path=/;`;
+      setToken(res.token.accessToken);
+      if (res.data.role === "admin") {
+        router.push("/admin");
+      }
       router.push("/");
+      toast.success("user logged in successfully");
+    } else if (res.status === "error") {
+      toast.error(res.message);
+    } else {
+      toast.error("something went wrong!");
     }
   };
 
