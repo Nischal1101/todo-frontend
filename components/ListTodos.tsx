@@ -2,12 +2,15 @@ import { typeTodo } from "@/lib/validators/todoSchema";
 import MyCheckbox from "./myCheckbox";
 
 const ListTodos = async () => {
-  const response = await fetch("http://localhost:8000/api/todo/todos", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKENDURL as string}/todo/todos`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const res = await response.json();
   const todos: [] | typeTodo[] = res.data;
   console.log(todos);

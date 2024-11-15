@@ -17,7 +17,9 @@ const Hero = ({ title }: { title: string | null }) => {
   const fetchData = useCallback(
     debounce(async () => {
       try {
-        const baseURL = "http://localhost:8000/api/todo/todos";
+        const baseURL = `${
+          process.env.NEXT_PUBLIC_BACKENDURL as string
+        }/todo/todos`;
 
         // Make API call
         const { data: res } = await axios.get(baseURL);
@@ -84,7 +86,9 @@ const Hero = ({ title }: { title: string | null }) => {
                     variant={"destructive"}
                     onClick={async () => {
                       const { data } = await axios.delete(
-                        `http://localhost:8000/api/todo/${todo.id}`,
+                        `${process.env.NEXT_PUBLIC_BACKENDURL as string}/todo/${
+                          todo.id
+                        }`,
                         {
                           headers: {
                             Authorization: `Bearer ${token}`,

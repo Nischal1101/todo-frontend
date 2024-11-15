@@ -45,7 +45,7 @@ const CreateTodoForm = () => {
     formData.append("priority", values.priority);
 
     const { data: res } = await axios.post(
-      "http://localhost:8000/api/todo",
+      `${process.env.NEXT_PUBLIC_BACKENDURL as string}/todo`,
       formData,
       {
         headers: {

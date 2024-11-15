@@ -31,7 +31,7 @@ const UpdateTodoForm = ({ todoId }: { todoId: number }) => {
   useEffect(() => {
     async function FetchTodo() {
       const { data } = await axios.get(
-        `http://localhost:8000/api/todo/${todoId}`
+        `${process.env.NEXT_PUBLIC_BACKENDURL as string}/todo/${todoId}`
       );
       setTodo(data);
     }

@@ -22,13 +22,16 @@ const UserRegistrationForm = () => {
   const [loading, setLoading] = useState(false);
   const onSubmit = async (values: FormValues) => {
     setLoading(true);
-    const response = await fetch("http://localhost:8000/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKENDURL as string}/auth/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
     const res = await response.json();
     if (res.status === "success") {
       setLoading(false);

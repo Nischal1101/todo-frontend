@@ -13,12 +13,15 @@ const Page = () => {
   const [todos, setTodos] = useState<[] | typeTodo[]>([]);
   useEffect(() => {
     async function fetchData() {
-      const { data: res } = await axios.get("http://localhost:8000/api/todo", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data: res } = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKENDURL as string}/todo`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setTodos(res.data);
     }
     fetchData();
