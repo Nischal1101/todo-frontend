@@ -7,11 +7,12 @@ import { useNewTodo } from "@/store/todoStore";
 
 const SheetBtn = () => {
   const { onOpen } = useNewTodo();
+
   return (
     <>
-      <Button onClick={onOpen}>
+      <Button onClick={onOpen} variant="default">
         <Plus />
-        New Todo
+        Add Todos
       </Button>
       <TodoSheet />
     </>
