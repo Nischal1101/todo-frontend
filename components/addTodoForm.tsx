@@ -12,25 +12,65 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { todoSchema } from "@/lib/validators/todoSchema";
+import { useAuthStore } from "@/store/authStore";
+import { useNewTodo } from "@/store/todoStore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import { Calendar } from "./ui/calendar";
 import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+
 export type FormValues = z.infer<typeof todoSchema>;
 
 const CreateTodoForm = () => {
-  const onSubmit = (values: FormValues) => {
-    console.log(values);
+  const router = useRouter();
+  const { token, refetch, setRefetch } = useAuthStore();
+  const [loading, setLoading] = useState(false);
+  const { onClose } = useNewTodo();
+  const onSubmit = async (values: FormValues) => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("description", values.description);
+    formData.append("title", values.title);
+    formData.append("file", (values.file as FileList)[0]);
+    formData.append("dueDate", values.dueDate.toISOString());
+    formData.append("priority", values.priority);
+
+    const { data: res } = await axios.post(
+      "http://localhost:8000/api/todo",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (res.status === "error") {
+      setLoading(false);
+      toast.error(res.message);
+    } else if (res.status === "success") {
+      router.refresh();
+      form.reset();
+
+      onClose();
+    } else {
+      toast.error("something went wrong!");
+    }
+    setRefetch(!refetch);
+    setLoading(false);
   };
   const form = useForm<z.infer<typeof todoSchema>>({
     resolver: zodResolver(todoSchema),
     defaultValues: {
-      name: "",
+      priority: "medium",
       description: "",
       title: "",
     },
@@ -189,7 +229,7 @@ const CreateTodoForm = () => {
           />
 
           <Button type="submit" className="w-full">
-            Add todo
+            Add todo {loading && <LoaderCircle className="animate-spin" />}
           </Button>
         </form>
       </Form>
